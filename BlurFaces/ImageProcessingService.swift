@@ -55,8 +55,8 @@ class ImageProcessingService {
             .cropped(to: ciImage.extent)
         
         // request the features from `CIDetector`
-        for faceFeaeture in ciDetector.features(in: ciImage) {
-            let faceRect = faceFeaeture.bounds
+        for faceFeature in ciDetector.features(in: ciImage) {
+            let faceRect = faceFeature.bounds
             
             // position the mask in the center of the face rect, relative to the image extent.
             let maskCenter = CIVector(x: faceRect.maxX - (faceRect.width/2),
