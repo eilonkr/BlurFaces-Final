@@ -66,24 +66,23 @@ class ImageProcessingService {
             ])
             
             let gradientOutput = radialGradientFilter!.outputImage!
-                .cropped(to: faceRect.insetBy(dx: -150, dy: -150))
+                .cropped(to: faceRect.insetBy(dx: -faceRect.width/2, dy: -faceRect.height/2))
             
             maskCanvasImage = gradientOutput.composited(over: maskCanvasImage)
-            
-            //makeFaceUI(for: normalizedToScreenRect)
         }
         
+        let blurRadius: Double = 30.0
         let blurredImage = ciImage
             .clampedToExtent()
-            .applyingGaussianBlur(sigma: 30)
+            .applyingGaussianBlur(sigma: blurRadius)
             .cropped(to: ciImage.extent)
         
-        let testResult = blurredImage.applyingFilter("CIBlendWithMask", parameters: [
+        let resultImage = blurredImage.applyingFilter("CIBlendWithMask", parameters: [
             kCIInputBackgroundImageKey: ciImage,
             kCIInputMaskImageKey: maskCanvasImage
         ])
         
-        if let cgImage = ciContext.createCGImage(testResult, from: testResult.extent) {
+        if let cgImage = ciContext.createCGImage(resultImage, from: resultImage.extent) {
             return UIImage(cgImage: cgImage)
         }
             
