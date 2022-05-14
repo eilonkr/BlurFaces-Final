@@ -16,10 +16,13 @@ class ViewController: UIViewController {
     
     var showRects: Bool = false {
         didSet {
-            showRectsButton.title = showRects ? "Hide Rects" : "Show Rects"
-            if showRects, let pickedImage = pickedImage {
+            showRectsButton.title = showRects ? "Blur Faces" : "Show Rects"
+            guard let pickedImage = pickedImage else { return }
+            if showRects {
+                imageView.image = pickedImage
                 generateFaceRects(for: pickedImage)
             } else {
+                blurFaces(in: pickedImage)
                 debugRectContainerView.subviews.forEach {
                     $0.removeFromSuperview()
                 }
@@ -102,9 +105,9 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
         view.layoutIfNeeded()
         if showRects {
             generateFaceRects(for: image)
+        } else {
+            blurFaces(in: image)
         }
-        
-        blurFaces(in: image)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
