@@ -59,21 +59,17 @@ class ViewController: UIViewController {
         }
         
         for faceRect in imageProcessingService.getFaceRects(in: image, normalizedTo: imageView.frame) {
-            makeFaceUI(for: faceRect)
+            let rectView = UIView(frame: faceRect)
+            rectView.backgroundColor = nil
+            rectView.layer.borderColor = UIColor.green.cgColor
+            rectView.layer.borderWidth = 1.5
+            debugRectContainerView.addSubview(rectView)
         }
     }
     
     func blurFaces(in image: UIImage) {
         let resultImage = imageProcessingService.blurFaces(in: image)
         imageView.image = resultImage
-    }
-    
-    func makeFaceUI(for rect: CGRect) {
-        let rectView = UIView(frame: rect)
-        rectView.backgroundColor = nil
-        rectView.layer.borderColor = UIColor.green.cgColor
-        rectView.layer.borderWidth = 1.5
-        debugRectContainerView.addSubview(rectView)
     }
     
     @IBAction func pickImageTapped() {
