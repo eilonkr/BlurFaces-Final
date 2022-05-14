@@ -20,7 +20,7 @@ class ViewController: UIViewController {
             guard let pickedImage = pickedImage else { return }
             if showRects {
                 imageView.image = pickedImage
-                generateFaceRects(for: pickedImage)
+                generateFaceBoundingBoxes(for: pickedImage)
             } else {
                 blurFaces(in: pickedImage)
                 debugRectContainerView.subviews.forEach {
@@ -53,7 +53,7 @@ class ViewController: UIViewController {
         debugRectContainerView.frame = imageView.frame
     }
     
-    func generateFaceRects(for image: UIImage) {
+    func generateFaceBoundingBoxes(for image: UIImage) {
         debugRectContainerView.subviews.forEach {
             $0.removeFromSuperview()
         }
@@ -100,7 +100,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
         
         view.layoutIfNeeded()
         if showRects {
-            generateFaceRects(for: image)
+            generateFaceBoundingBoxes(for: image)
         } else {
             blurFaces(in: image)
         }
