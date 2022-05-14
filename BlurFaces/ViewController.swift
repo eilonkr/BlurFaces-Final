@@ -12,11 +12,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var showRectsButton: UIBarButtonItem!
     
+    var pickedImage: UIImage?
+    
     var showRects: Bool = false {
         didSet {
             showRectsButton.title = showRects ? "Hide Rects" : "Show Rects"
-            if showRects, let image = imageView.image {
-                generateFaceRects(for: image)
+            if showRects, let pickedImage = pickedImage {
+                generateFaceRects(for: pickedImage)
             } else {
                 debugRectContainerView.subviews.forEach {
                     $0.removeFromSuperview()
@@ -87,6 +89,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
             return
         }
         
+        pickedImage = image
         imageView.image = image
         
         // make sure that the image view is sized to fit the aspect ratio of the picked image,
@@ -101,7 +104,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
             generateFaceRects(for: image)
         }
         
-//        blurFaces(in: image)
+        blurFaces(in: image)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
